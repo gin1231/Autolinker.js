@@ -70,6 +70,7 @@ var Autolinker = {
 		var htmlRegex = Autolinker.htmlRegex,         // full path for friendly
 		    matcherRegex = Autolinker.matcherRegex,   // out-of-scope calls
 		    newWindow = ( 'newWindow' in options ) ? options.newWindow : true,  // defaults to true
+		    useCordovaPlugins = ( 'useCordovaPlugins' in options ) ? options.useCordovaPlugins : true,  // defaults to true
 		    stripPrefix = ( 'stripPrefix' in options ) ? options.stripPrefix : true,  // defaults to true
 		    truncate = options.truncate,
 		    enableTwitter = ( 'twitter' in options ) ? options.twitter : true,  // defaults to true
@@ -150,6 +151,10 @@ var Autolinker = {
 				anchorAttributes.push( 'href="' + anchorHref + '"' );
 				if( newWindow ) {
 					anchorAttributes.push( 'target="_blank"' );
+				}
+
+				if( useCordovaPlugins ) {
+					anchorAttributes.push( 'onclick="if ( window.plugins && window.plugins.externalOpen ) { window.plugins.externalOpen.openURL(this.href); return false; } return true;"' );
 				}
 				
 				// Truncate the anchor text if it is longer than the provided 'truncate' option
